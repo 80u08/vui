@@ -43,13 +43,12 @@ jobs:
               }
           }
           EOF
-        env:
-          OPENCODE_API_BASE_URL: ${{ secrets.OPENCODE_API_BASE_URL }}
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
 
       - name: 执行 OpenCode
         uses: anomalyco/opencode/github@latest
         env:
+          OPENCODE_API_BASE_URL: ${{ secrets.OPENCODE_API_BASE_URL }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: my-custom-provider/gpt-5.5
