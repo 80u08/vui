@@ -1,0 +1,36 @@
+name: OpenCode - 自动审查 Pull Request
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: read
+  issues: read
+
+jobs:
+  opencode-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取仓库代码
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: 执行 OpenCode
+        uses: anomalyco/opencode/github@latest
+        env:
+          OPENCODE_API_BASE_URL: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          model: my-custom-provider/gpt-5.5
+          use_github_token: true
+          prompt: |
+            审查此 Pull Request:
+            - 检查是否有潜在BUG
+            - 给出优化建议
+            - 必须使用简体中文回复
