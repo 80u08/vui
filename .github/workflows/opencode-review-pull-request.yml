@@ -23,14 +23,17 @@ jobs:
       - name: 执行 OpenCode
         uses: anomalyco/opencode/github@latest
         env:
-          OPENCODE_API_BASE_URL: ${{ secrets.OPENCODE_API_BASE_URL }}
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY}}
+          OPENAI_API_BASE_URL: ${{ secrets.OPENCODE_API_BASE_URL }}
+          OPENAI_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          model: my-custom-provider/gpt-5.5
+          model: gpt-5.5
           use_github_token: true
           prompt: |
             审查此 Pull Request:
             - 检查是否有潜在BUG
-            - 给出优化建议
+            - 给出具体的代码优化建议
+            - 识别可能的安全隐患
             - 必须使用简体中文回复
+            - 针对有问题的代码行添加行内评论
+            - 如果代码质量良好，请明确说明"本次提交代码质量良好，无明显问题"
